@@ -82,7 +82,6 @@ async def get_file(item:item):
   DB.add_words(item.words)
 
 
-
 @router.get("/order")
 async def out_file():
   return DB.get_words()
