@@ -35,6 +35,8 @@ def wordchk(word):
       for d in dir:
         if d in word:
             deg=degchk(word)
+            if dir==direction[-1]:
+              return dir,deg
             return dir[0],deg
 
 rep={"左":"left","前":"center","右":"right","振れ":"swing"}
