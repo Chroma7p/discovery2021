@@ -54,7 +54,7 @@ app = FastAPI()
 
 
 
-@app.get("/records")
+@app.post("/records")
 async def get_file(item:item):
   dic=decision(item.words)
   with open("/words.json",mode="w") as f:
@@ -62,7 +62,7 @@ async def get_file(item:item):
 
 
 
-@app.post("/order")
+@app.get("/order")
 async def root():
   with open("/words.json",mode="r") as f:
     s=f.read()
