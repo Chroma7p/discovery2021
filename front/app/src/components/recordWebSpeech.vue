@@ -33,12 +33,11 @@
 </template>
 
 <script>
+import axios from "axios";
 
-import {
-  // apiPrefix,
-  bocabRegex
-} from "@/components/consts";
-// import axios from "axios";
+const bocabRegex = /右|左|前|まえ|みぎ|ひだり|ふれ|ちょっと|すごく/g;
+
+const apiPrefix = "http://localhost:8000"
 
 export default {
   name: "RecordWebSpeech",
@@ -99,7 +98,7 @@ export default {
       for(const i in this.availableWords){
         this.displayTexts += this.availableWords[i];
       }
-      // axios.post(apiPrefix + "/record", {data: this.availableWords});
+      axios.post(apiPrefix + "/records", {words: this.availableWords});
     }
   }
 }

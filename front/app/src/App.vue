@@ -12,12 +12,9 @@
 
 <script>
 
-import RecordWebSpeech from "@/components/recordWebSpeech";
+import RecordWebSpeech from "./components/recordWebSpeech";
 export default {
   name: 'App',
-
-  components: {
-    RecordWebSpeech,
-  }
+  components: {RecordWebSpeech},
 };
 </script>

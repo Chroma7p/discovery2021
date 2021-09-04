@@ -130,3 +130,7 @@ dmypy.json
 
 db/
 configdb/
+
+front/node_modules
+front/.idea/**/workspace.xml
+front/.idea/**/tasks.xml
