@@ -24,6 +24,7 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: hack2021tofu
 
   backend:
-    image: backend
+    build: ./backend
     ports:
       - 80:80
+    

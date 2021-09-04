@@ -52,7 +52,7 @@ class Item(BaseModel):
 
 class Word_DB(object):
     def __init__(self):
-        self.client =MongoClient('localhost', 27017)#ここローカルホストになってるので適宜変えてください
+        self.client =MongoClient('mongodb://%s:%s@mongo:27017' % ('root', 'hack2021tofu'))#ここローカルホストになってるので適宜変えてください
         self.db=self.client["word_db"]
   
     def add_words(self,words):
@@ -72,13 +72,9 @@ app = FastAPI()
 
 DB=Word_DB()
 
-
-
 @app.post("/records")
 async def get_file(item:Item):
   DB.add_words(item.words)
-
-
 
 @app.get("/order")
 async def out_file():
