@@ -3,13 +3,13 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-#•ûŒü
-direction=["¶","‘O","‰E","U‚ê"]
-#’ö“x
+#æ–¹å‘
+direction=["å·¦","å‰","å³","æŒ¯ã‚Œ"]
+#ç¨‹åº¦
 degree=[
-    ["‚·‚±‚µ","‚¿‚å‚Á‚Æ"],
-    ["‚Ü‚ ‚Ü‚ "],
-    ["‚©‚È‚è","‚ß‚Á‚¿‚á","’´"]
+    ["ã™ã“ã—","ã¡ã‚‡ã£ã¨"],
+    ["ã¾ã‚ã¾ã‚"],
+    ["ã‹ãªã‚Š","ã‚ã£ã¡ã‚ƒ","è¶…"]
     ]
 
 def degchk(word):
@@ -28,7 +28,7 @@ def wordchk(word):
             deg=degchk(word)
             return dir,deg
 
-rep={"¶":"l","‘O":"c","‰E":"r"}
+rep={"å·¦":"l","å‰":"c","å³":"r"}
 def decision(words):
     all=0
     ret={"left":0,"center":0,"right":0,"swing":0}
