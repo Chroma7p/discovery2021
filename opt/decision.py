@@ -1,3 +1,5 @@
+import json
+
 from fastapi import FastAPI
 from typing import Optional
 
@@ -10,9 +12,9 @@ from pydantic import BaseModel
 direction=["左","前","右","振れ"]
 #程度
 degree=[
-    ["すこし","ちょっと"],
-    ["まあまあ"],
-    ["かなり","めっちゃ","超"]
+    ["ちょっと","少し"],
+    ["そこそこ","まあまあ"],
+    ["かなり","すごく","めっちゃ"]
     ]
 
 def degchk(word):
@@ -31,7 +33,7 @@ def wordchk(word):
             deg=degchk(word)
             return dir,deg
 
-rep={"左":"l","前":"c","右":"r"}
+rep={"左":"left","前":"center","右":"right"}
 def decision(words):
     all=0
     ret={"left":0,"center":0,"right":0,"swing":0}
@@ -47,6 +49,21 @@ def decision(words):
 class Item(BaseModel):
     words:list
 app = FastAPI()
-@app.get("/order")
-async def root(item:Item):
-    return decision(item.words)
+
+
+
+
+
+@app.get("/records")
+async def get_file(item:item):
+  dic=decision(item.words)
+  with open("/words.json",mode="w") as f:
+    f.write(dic)
+
+
+
+@app.post("/order")
+async def root():
+  with open("/words.json",mode="r") as f:
+    s=f.read()
+  return json.loads(s)
