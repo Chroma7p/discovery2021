@@ -17,7 +17,7 @@
 
       <v-row>
         <v-col>
-          {{currText}}
+          {{displayTexts}}
         </v-col>
       </v-row>
 
@@ -28,7 +28,11 @@
 
 <script>
 
-import {bocabRegex} from "@/components/consts";
+import {
+  apiPrefix,
+  bocabRegex
+} from "@/components/consts";
+import axios from "axios";
 
 export default {
   name: "RecordWebSpeech",
@@ -36,9 +40,10 @@ export default {
     return {
       // eslint-disable-next-line no-undef
       recog: new webkitSpeechRecognition(),
-      currText: "",
       isRecording: false,
       availableWords: [],
+      displayTexts: "",
+      isEnding : false
     };
   },
   mounted() {
@@ -55,6 +60,8 @@ export default {
       }
     };
 
+    this.recog.onstart = () => {this.isRecording = true;};
+    this.recog.onend = () => {this.isRecording = false;};
   },
   methods: {
     routeClick(){
@@ -66,15 +73,23 @@ export default {
     },
     recordStart(){
       this.recog.start();
-      this.isRecording = true;
     },
     recordEnd(){
-      this.recog.stop();
-      this.isRecording = false;
+      if(this.isEnding)
+        return;
+      this.isEnding = true;
+      setTimeout(()=> {
+        this.recog.stop();
+        this.isEnding = false;
+        }, 500);
     },
     textCallback(text){
-      this.currText += text;
-      this.availableWords = this.currText.match(bocabRegex);
+      this.availableWords = text.match(bocabRegex);
+      this.displayTexts  = "";
+      for(const i in this.availableWords){
+        this.displayTexts += this.availableWords[i];
+      }
+      axios.post(apiPrefix + "/record", {data: this.availableWords});
     }
   }
 }
