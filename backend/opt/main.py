@@ -12,7 +12,7 @@ from pymongo import MongoClient
 
 
 #方向
-direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],"振れ"]
+direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],"ふれ"]
 #程度
 degree=[
     ["ちょっと","少し"],
