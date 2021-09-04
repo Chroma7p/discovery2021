@@ -47,9 +47,13 @@ def decision(words):
         dir,deg=wordchk(word)
         ret[rep[dir]]+=deg
         all+=(rep[dir]!="swing")*deg
-    if all==0 and ret["swing"]==0:
-      return {"left":0,"center":0,"right":0,"swing":False}
+    if all==0:
+      if ret["swing"]==0:
+        return {"left":0,"center":0,"right":0,"swing":False}
+      else:
+        return {"left":0,"center":0,"right":0,"swing":True}
     for i in ["left","center","right"]:
+      if ret[i]!=0:
         ret[i]/=all
     ret["swing"]=ret["swing"]>(1/3)
     return ret
