@@ -54,17 +54,22 @@ class Item(BaseModel):
 
 
 class Word_DB(object):
-  def __init__(self):
-    self.client =MongoClient()
-    self.db=self.client["word_db"]
+    def __init__(self):
+        self.client =MongoClient('localhost', 27017)#ここローカルホストになってるので適宜変えてください
+        self.db=self.client["word_db"]
   
-  def add_words(self,words):
-    self.db.word_db.insert_many(words)
+    def add_words(self,words):
+        wjson={}
+        for w in words:
+            self.db.word_db.insert_one({"word":w})
 
-  def get_words(self):
-    ret= self.db.word_db.find()
-    self.db.word_db.remove()
-    return ret
+    def get_words(self):
+        ret= list(self.db.word_db.find())
+        self.db.word_db.delete_many({})
+        return [i["word"]for i in ret]
+
+    def print_DB(self):
+        print(list(self.db.word_db.find()))
 
 router = APIrouter()
 
@@ -74,11 +79,10 @@ DB=Word_DB()
 
 @router.post("/records")
 async def get_file(item:item):
-  dic=decision(item.words)
-  add_words()
+  DB.add_words(item.words)
 
 
 
 @router.get("/order")
 async def out_file():
-  return get_words()
+  return DB.get_words()
