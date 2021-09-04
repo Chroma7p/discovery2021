@@ -1,0 +1,1 @@
+export const bocabRegex = /右|左|前|ふれ|ちょっと|すごく/g;
