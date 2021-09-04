@@ -1,6 +1,6 @@
 import json
 
-from fastapi import FastAPI
+from fastapi import APIRouter
 from typing import Optional
 
 from pydantic import BaseModel
@@ -33,7 +33,7 @@ def wordchk(word):
             deg=degchk(word)
             return dir,deg
 
-rep={"左":"left","前":"center","右":"right","振れ":"swing"}
+rep={"左":"left","前":"center","右":"right"}
 def decision(words):
     all=0
     ret={"left":0,"center":0,"right":0,"swing":0}
@@ -46,13 +46,16 @@ def decision(words):
     ret["swing"]=ret["swing"]>(1/3)
     return ret
 
+
+
+
 class Item(BaseModel):
     words:list
 
 
 class Word_DB(object):
     def __init__(self):
-        self.client =MongoClient('mongodb://%s:%s@mongo:27017' % ('root', 'hack2021tofu'))#ここローカルホストになってるので適宜変えてください
+        self.client =MongoClient('localhost', 27017)#ここローカルホストになってるので適宜変えてください
         self.db=self.client["word_db"]
   
     def add_words(self,words):
@@ -68,14 +71,17 @@ class Word_DB(object):
     def print_DB(self):
         print(list(self.db.word_db.find()))
 
-app = FastAPI()
+router = APIrouter()
 
 DB=Word_DB()
 
-@app.post("/records")
-async def get_file(item:Item):
+
+
+@router.post("/records")
+async def get_file(item:item):
   DB.add_words(item.words)
 
-@app.get("/order")
+
+@router.get("/order")
 async def out_file():
-  return decision(DB.get_words())
+  return DB.get_words()
