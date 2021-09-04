@@ -1,6 +1,6 @@
 import json
 
-from fastapi import APIRouter
+from fastapi import FastAPI
 from typing import Optional
 
 from pydantic import BaseModel
@@ -46,9 +46,6 @@ def decision(words):
     ret["swing"]=ret["swing"]>(1/3)
     return ret
 
-
-
-
 class Item(BaseModel):
     words:list
 
@@ -71,18 +68,18 @@ class Word_DB(object):
     def print_DB(self):
         print(list(self.db.word_db.find()))
 
-router = APIrouter()
+app = FastAPI()
 
 DB=Word_DB()
 
 
 
-@router.post("/records")
-async def get_file(item:item):
+@app.post("/records")
+async def get_file(item:Item):
   DB.add_words(item.words)
 
 
 
-@router.get("/order")
+@app.get("/order")
 async def out_file():
   return DB.get_words()
