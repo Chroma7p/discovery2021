@@ -39,7 +39,7 @@ def wordchk(word):
               return dir,deg
             return dir[0],deg
 
-rep={"左":"left","前":"center","右":"right","振れ":"swing"}
+rep={"左":"left","前":"center","右":"right","ふれ":"swing"}
 def decision(words):
     all=0
     ret={"left":0,"center":0,"right":0,"swing":0}
