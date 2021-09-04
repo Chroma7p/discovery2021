@@ -1,11 +1,14 @@
 import json
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from typing import Optional
 
 from pydantic import BaseModel
 
 from pymongo import MongoClient
+
 
 
 #方向
@@ -71,6 +74,18 @@ class Word_DB(object):
         print(list(self.db.word_db.find()))
 
 app = FastAPI()
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 DB=Word_DB()
 
