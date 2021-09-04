@@ -12,7 +12,7 @@ from pymongo import MongoClient
 
 
 #方向
-direction=["左","前","右","振れ"]
+direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],["振れ","ふれ"]]
 #程度
 degree=[
     ["ちょっと","少し"],
@@ -32,9 +32,10 @@ def degchk(word):
 
 def wordchk(word):
     for dir in direction:
-        if dir in word:
+      for d in dir:
+        if d in word:
             deg=degchk(word)
-            return dir,deg
+            return dir[0],deg
 
 rep={"左":"left","前":"center","右":"right","振れ":"swing"}
 def decision(words):
