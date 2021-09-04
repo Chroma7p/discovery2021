@@ -1,15 +1,20 @@
-from fastapi import FastAPI
+import json
+
+from fastapi import APIRouter
 from typing import Optional
 
 from pydantic import BaseModel
+
+from pymongo import MongoClient
+
 
 #方向
 direction=["左","前","右","振れ"]
 #程度
 degree=[
-    ["すこし","ちょっと"],
-    ["まあまあ"],
-    ["かなり","めっちゃ","超"]
+    ["ちょっと","少し"],
+    ["そこそこ","まあまあ"],
+    ["かなり","すごく","めっちゃ"]
     ]
 
 def degchk(word):
@@ -28,7 +33,7 @@ def wordchk(word):
             deg=degchk(word)
             return dir,deg
 
-rep={"左":"l","前":"c","右":"r"}
+rep={"左":"left","前":"center","右":"right"}
 def decision(words):
     all=0
     ret={"left":0,"center":0,"right":0,"swing":0}
@@ -41,9 +46,43 @@ def decision(words):
     ret["swing"]=ret["swing"]>(1/3)
     return ret
 
+
+
+
 class Item(BaseModel):
     words:list
-app = FastAPI()
-@app.get("/order")
-async def root(item:Item):
-    return decision(item.words)
+
+
+class Word_DB(object):
+    def __init__(self):
+        self.client =MongoClient('localhost', 27017)#ここローカルホストになってるので適宜変えてください
+        self.db=self.client["word_db"]
+  
+    def add_words(self,words):
+        wjson={}
+        for w in words:
+            self.db.word_db.insert_one({"word":w})
+
+    def get_words(self):
+        ret= list(self.db.word_db.find())
+        self.db.word_db.delete_many({})
+        return [i["word"]for i in ret]
+
+    def print_DB(self):
+        print(list(self.db.word_db.find()))
+
+router = APIrouter()
+
+DB=Word_DB()
+
+
+
+@router.post("/records")
+async def get_file(item:item):
+  DB.add_words(item.words)
+
+
+
+@router.get("/order")
+async def out_file():
+  return DB.get_words()

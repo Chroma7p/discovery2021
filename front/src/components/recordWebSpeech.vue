@@ -3,14 +3,20 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-card-title>ぼくのすいかわり</v-card-title>
+          <v-card-title>Suicovery</v-card-title>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          {{getTime}}
         </v-col>
       </v-row>
 
       <v-row>
         <v-col class="text-center">
-          <v-btn icon @click="routeClick">
-            <v-icon>{{isRecording ? "mdi-microphone" : "mdi-microphone-outline"}}</v-icon>
+          <v-btn icon elevation="3" @click="recordStart">
+            <v-icon large>{{isRecording ? "mdi-microphone" : "mdi-microphone-outline"}}</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -29,10 +35,10 @@
 <script>
 
 import {
-  apiPrefix,
+  // apiPrefix,
   bocabRegex
 } from "@/components/consts";
-import axios from "axios";
+// import axios from "axios";
 
 export default {
   name: "RecordWebSpeech",
@@ -43,8 +49,13 @@ export default {
       isRecording: false,
       availableWords: [],
       displayTexts: "",
-      isEnding : false
+      timeCount: 0
     };
+  },
+  computed: {
+    getTime(){
+      return (this.timeCount <= 0) ? "Press microphone!": this.timeCount.toFixed(1);
+    }
   },
   mounted() {
     this.recog.lang = "ja-JP"
@@ -64,24 +75,23 @@ export default {
     this.recog.onend = () => {this.isRecording = false;};
   },
   methods: {
-    routeClick(){
-      if(!this.isRecording){
-        this.recordStart();
-      }else{
-        this.recordEnd();
-      }
-    },
     recordStart(){
+      if(this.isRecording)
+        return;
+
       this.recog.start();
+      this.timeCount = 5.0;
+
+      const timer = setInterval(() => {
+        this.timeCount -= 0.1;
+        if(this.timeCount <= 0){
+          this.recordEnd();
+          clearInterval(timer);
+        }
+      }, 100);
     },
     recordEnd(){
-      if(this.isEnding)
-        return;
-      this.isEnding = true;
-      setTimeout(()=> {
-        this.recog.stop();
-        this.isEnding = false;
-        }, 500);
+      this.recog.stop();
     },
     textCallback(text){
       this.availableWords = text.match(bocabRegex);
@@ -89,7 +99,7 @@ export default {
       for(const i in this.availableWords){
         this.displayTexts += this.availableWords[i];
       }
-      axios.post(apiPrefix + "/record", {data: this.availableWords});
+      // axios.post(apiPrefix + "/record", {data: this.availableWords});
     }
   }
 }
