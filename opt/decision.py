@@ -1,11 +1,11 @@
 import json
 
-from fastapi import FastAPI
+from fastapi import APIRouter
 from typing import Optional
 
 from pydantic import BaseModel
 
-
+from pymongo import MongoClient
 
 
 #方向
@@ -46,24 +46,39 @@ def decision(words):
     ret["swing"]=ret["swing"]>(1/3)
     return ret
 
+
+
+
 class Item(BaseModel):
     words:list
-app = FastAPI()
+
+
+class Word_DB(object):
+  def __init__(self):
+    self.client =MongoClient()
+    self.db=self.client["word_db"]
+  
+  def add_words(self,words):
+    self.db.word_db.insert_many(words)
+
+  def get_words(self):
+    ret= self.db.word_db.find()
+    self.db.word_db.remove()
+    return ret
+
+router = APIrouter()
+
+DB=Word_DB()
 
 
 
-
-
-@app.post("/records")
+@router.post("/records")
 async def get_file(item:item):
   dic=decision(item.words)
-  with open("/words.json",mode="w") as f:
-    f.write(dic)
+  add_words()
 
 
 
-@app.get("/order")
-async def root():
-  with open("/words.json",mode="r") as f:
-    s=f.read()
-  return json.loads(s)
+@router.get("/order")
+async def out_file():
+  return get_words()
