@@ -18,16 +18,21 @@ services:
     build: ./backend
     ports:
       - 8000:8000
-      - 5000:5000
     environment:
       - PORT=8000
 
-  # front:
-  #   build: ./front
-  #   ports:
-  #     - 80:80
-  #   volumes: 
-  #     - front:/home/node/app
+  front:
+    build: ./front
+    ports:
+      - 80:80
+    volumes: 
+      - front:/home/node/app
+  
+  socket:
+    build: ./socket
+    ports:
+      - 8080:8080
+      - 4000:4000
       
 volumes:
   front:
