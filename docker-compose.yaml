@@ -1,6 +1,6 @@
 version: '3.1'
 
-services: 
+services:
 
   mongo:
     image: mongo
@@ -26,5 +26,4 @@ services:
     ports:
       - 80:80
     environment:
-      - VUE_BUILD_ENV=$DOCKER_BUILD_ENV
-    
+      - VUE_APP_BUILD_ENV=$DOCKER_BUILD_ENV
