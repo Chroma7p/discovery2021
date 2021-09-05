@@ -16,8 +16,8 @@ direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],"ふれ"]
 #程度
 degree=[
     ["ちょっと","少し"],
-    ["そこそこ","まあまあ"],
-    ["かなり","すごく","めっちゃ"]
+    [],
+    ["かなり","すごく"]
     ]
 
 def degchk(word):
@@ -36,17 +36,24 @@ def wordchk(word):
         if d in word:
             deg=degchk(word)
             if dir==direction[-1]:
-              return dir,deg
-            return dir[0],deg
+              return dir,deg,-1
+            return dir[0],deg,-1
+    return -1,-1,deg
 
 rep={"左":"left","前":"center","右":"right","ふれ":"swing"}
 def decision(words):
     all=0
+    stock=0
     ret={"left":0,"center":0,"right":0,"swing":0}
     for word in words:
-        dir,deg=wordchk(word)
-        ret[rep[dir]]+=deg
-        all+=(rep[dir]!="swing")*deg
+        dir,deg,stk=wordchk(word)
+        if stk!=-1:
+          stock+=stk
+          continue
+        ndeg=deg+stock
+        ret[rep[dir]]+=ndeg
+        all+=(rep[dir]!="swing")*ndeg
+        stock=0
     if all==0:
       if ret["swing"]==0:
         return {"left":0,"center":0,"right":0,"swing":False}
