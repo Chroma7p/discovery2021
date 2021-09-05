@@ -25,5 +25,3 @@ services:
     build: ./front
     ports:
       - 80:80
-    environment:
-      - VUE_APP_BUILD_ENV=$DOCKER_BUILD_ENV

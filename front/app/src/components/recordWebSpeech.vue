@@ -35,9 +35,11 @@
 <script>
 import axios from "axios";
 
+const isProduct = false;
+
 const bocabRegex = /右|左|前|まえ|みぎ|ひだり|ふれ|ちょっと|すごく|少し|かなり|そこそこ/g;
 
-const apiPrefix = (process.env.VUE_APP_BUILD_ENV === "production") ? "http://163.43.106.67:8000/" : "http://localhost:8000"
+const apiPrefix = (isProduct) ? "http://163.43.106.67:8000/" : "http://localhost:8000"
 
 export default {
   name: "RecordWebSpeech",
