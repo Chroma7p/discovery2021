@@ -22,6 +22,7 @@ degree=[
 
 
 
+rep={"左":"left","前":"center","右":"right","ふれ":"swing"}
 def degchk(word):
     sco=0
     for i, deg in enumerate(degree):
@@ -29,7 +30,7 @@ def degchk(word):
             if d in word:
                 sco+=max(i,0.5)
     if sco==0:
-        sco=2
+        sco=1
     return sco
 
 def wordchk(word):
@@ -41,34 +42,39 @@ def wordchk(word):
               return dir,deg,-1
             return dir[0],deg,-1
     return -1,-1,degchk(word)
-
-rep={"左":"left","前":"center","右":"right","ふれ":"swing"}
 def decision(words):
     all=0
     nall=0
     stock=0
     ret={"left":0,"center":0,"right":0,"swing":0,"power":0}
+    pow={"left":0,"center":0,"right":0}
     for word in words:
         dir,deg,stk=wordchk(word)
         if stk!=-1:
           stock+=stk
           continue
+        if rep[dir]=="swing":
+            ret["swing"]+=1
+            continue
         ndeg=deg+stock
         ret[rep[dir]]+=ndeg
-        all+=(rep[dir]!="swing")*ndeg
-        nall+=rep[dir]!="swing"
+        all+=ndeg
+        nall+=1
         stock=0
     if all==0:
       if ret["swing"]==0:
         return {"left":0,"center":0,"right":0,"swing":False,"power":0}
       else:
         return {"left":0,"center":0,"right":0,"swing":True,"power":0}
+    #print(ret)
+    ret["power"]=max(ret["left"],ret["right"],ret["center"])/nall
     for i in ["left","center","right"]:
       if ret[i]!=0:
         ret[i]/=all
-    ret["swing"]=ret["swing"]>(1/3)
-    ret["power"]=max(ret["left"],ret["right"],ret["center"])/nall
+    ret["swing"]=ret["swing"]>nall*(1/3)
+    #print(nall,all)
     return ret
+
 
 class Item(BaseModel):
     words:list
