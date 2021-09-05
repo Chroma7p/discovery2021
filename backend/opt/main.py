@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from pymongo import MongoClient
 
 import socketio
+
 #方向
 direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],"ふれ"]
 #程度
@@ -95,7 +96,8 @@ app = FastAPI()
 
 # setup socketio
 sio = socketio.AsyncServer(async_mode='asgi')
-app_socketio = socketio.ASGIApp(sio, other_asgi_app=app)
+app = socketio.ASGIApp(sio)
+socketio.run(app,host='0.0.0.0')
 
 origins = [
     "*"
@@ -113,7 +115,7 @@ DB=Word_DB()
 
 @app.post("/records")
 async def get_file(item:Item):
-  sio.start_background_task(sio.emit,"word",{"words":item.words})
+  await sio.emit("word",{"words":item.words})
   DB.add_words(item.words)
 
 @app.get("/order")

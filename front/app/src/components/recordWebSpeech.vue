@@ -3,12 +3,21 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-img></v-img>
+          <v-img :src="logo" />
+        </v-col>
+      </v-row>
+      <v-divider />
+      <v-row>
+        <v-col cols="6">
+          <v-img :src="howTo1" />
+        </v-col>
+        <v-col cols="6">
+          <v-img :src="howTo2" />
         </v-col>
       </v-row>
 
       <v-row>
-        <v-col>
+        <v-col class="text-center">
           {{getTime}}
         </v-col>
       </v-row>
@@ -56,6 +65,15 @@ export default {
   computed: {
     getTime(){
       return (this.timeCount <= 0) ? "Press microphone!": this.timeCount.toFixed(1);
+    },
+    howTo1(){
+      return require("@/assets/img/HowTo_1.png");
+    },
+    howTo2(){
+      return require("@/assets/img/HowTo_2.png");
+    },
+    logo(){
+      return require("@/assets/img/Logo.png");
     }
   },
   mounted() {
