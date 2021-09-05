@@ -115,7 +115,7 @@ DB=Word_DB()
 
 @app.post("/records")
 async def get_file(item:Item):
-  await sio.emit("word",{"words":item.words})
+  # await sio.emit("word",{"words":item.words})
   DB.add_words(item.words)
 
 @app.get("/order")
