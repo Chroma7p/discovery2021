@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from pymongo import MongoClient
 
-import socketio
+# import socketio
 
 #方向
 direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],"ふれ"]
@@ -86,7 +86,7 @@ class Word_DB(object):
     def __init__(self):
         self.client =MongoClient('mongodb://%s:%s@mongo:27017' % ('root', 'hack2021tofu'))#ここローカルホストになってるので適宜変えてください
         self.db=self.client["word_db"]
-  
+
     def add_words(self,words):
         wjson={}
         for w in words:
@@ -103,9 +103,9 @@ class Word_DB(object):
 app = FastAPI()
 
 # setup socketio
-sio = socketio.AsyncServer(async_mode='asgi')
-app = socketio.ASGIApp(sio)
-socketio.run(app,host='0.0.0.0')
+# sio = socketio.AsyncServer(async_mode='asgi')
+# app = socketio.ASGIApp(sio)
+# socketio.run(app,host='0.0.0.0')
 
 origins = [
     "*"
@@ -123,7 +123,7 @@ DB=Word_DB()
 
 @app.post("/records")
 async def get_file(item:Item):
-  await sio.emit("word",{"words":item.words})
+  # await sio.emit("word",{"words":item.words})
   DB.add_words(item.words)
 
 @app.get("/order")
