@@ -11,13 +11,14 @@ from pymongo import MongoClient
 
 # import socketio
 
+
 #方向
 direction=[["左","ひだり"],["前","まえ"],["右","みぎ"],"ふれ"]
 #程度
 degree=[
-    ["ちょっと","少し"],
-    [],
-    ["かなり","すごく"]
+    ["ちょっと","少し","すこし",],
+    ["まあまあ","そこそこ"],
+    ["かなり","すごく","めっちゃ","超"]
     ]
 
 
@@ -57,11 +58,10 @@ def decision(words):
             ret["swing"]+=1
             continue
         if stock!=0 and deg==1:
-            ndeg=stock
-        ndeg=deg
-        ret[rep[dir]]+=ndeg
+            deg=stock
+        ret[rep[dir]]+=deg
         get[rep[dir]]+=1
-        all+=ndeg
+        all+=deg
 
         stock=0
     if all==0:
@@ -70,13 +70,16 @@ def decision(words):
       else:
         return {"left":0,"center":0,"right":0,"swing":True,"power":0}
     print(ret)
+    print(get)
     ret["power"]=max(ret["left"],ret["right"],ret["center"])/max(get["left"],get["right"],get["center"])
+
     for i in ["left","center","right"]:
       if ret[i]!=0:
         ret[i]/=all
     ret["swing"]=ret["swing"]>max(get["left"],get["right"],get["center"])
-    print(all)
+
     return ret
+
 
 class Item(BaseModel):
     words:list
