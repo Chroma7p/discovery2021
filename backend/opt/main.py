@@ -67,8 +67,7 @@ def decision(words):
         return {"left":0,"center":0,"right":0,"swing":False,"power":0}
       else:
         return {"left":0,"center":0,"right":0,"swing":True,"power":0}
-    print(ret)
-    print(get)
+
     ret["power"]=max(ret["left"],ret["right"],ret["center"])/max(get["left"],get["right"],get["center"])
 
     for i in ["left","center","right"]:
