@@ -27,7 +27,7 @@ def degchk(word):
     for i, deg in enumerate(degree):
         for d in deg:
             if d in word:
-                sco+=(i+1)
+                sco+=max(i,0.5)
     if sco==0:
         sco=2
     return sco
@@ -56,7 +56,7 @@ def decision(words):
         ndeg=deg+stock
         ret[rep[dir]]+=ndeg
         all+=(rep[dir]!="swing")*ndeg
-        nall+=(rep[dir]!="swing")
+        nall+=rep[dir]!="swing"
         stock=0
     if all==0:
       if ret["swing"]==0:
