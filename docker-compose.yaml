@@ -18,6 +18,7 @@ services:
     build: ./backend
     ports:
       - 8000:8000
+      - 3000:3000
     environment:
       - PORT=8000
 
@@ -30,4 +31,4 @@ services:
       
 volumes:
   front:
-    external: true
+
