@@ -93,7 +93,8 @@ app = FastAPI()
 
 # setup socketio
 sio = socketio.AsyncServer(async_mode='asgi')
-app_socketio = socketio.ASGIApp(sio)
+app = socketio.ASGIApp(sio)
+socketio.run(app,host='0.0.0.0')
 
 origins = [
     "*"
