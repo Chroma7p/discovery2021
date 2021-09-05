@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-card-title>Suicovery</v-card-title>
+          <v-img></v-img>
         </v-col>
       </v-row>
 
@@ -39,7 +39,7 @@ const isProduct = false;
 
 const bocabRegex = /右|左|前|まえ|みぎ|ひだり|ふれ|ちょっと|すごく|少し|かなり|そこそこ/g;
 
-const apiPrefix = (isProduct) ? "http://163.43.106.67:8000/" : "http://localhost:8000"
+const apiPrefix = (isProduct) ? "http://163.43.106.67:8000" : "http://localhost:8000"
 
 export default {
   name: "RecordWebSpeech",
