@@ -79,7 +79,7 @@ export default {
         return;
 
       this.recog.start();
-      this.timeCount = 5.0;
+      this.timeCount = 3.0;
 
       const timer = setInterval(() => {
         this.timeCount -= 0.1;
