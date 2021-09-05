@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-container>
+    <v-container style="background-color: green">
       <v-row>
         <v-col>
           <RecordWebSpeech />
@@ -18,3 +18,7 @@ export default {
   components: {RecordWebSpeech},
 };
 </script>
+
+<style>
+
+</style>
