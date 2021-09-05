@@ -38,7 +38,7 @@ def wordchk(word):
             if dir==direction[-1]:
               return dir,deg,-1
             return dir[0],deg,-1
-    return -1,-1,deg
+    return -1,-1,degchk(word)
 
 rep={"左":"left","前":"center","右":"right","ふれ":"swing"}
 def decision(words):
