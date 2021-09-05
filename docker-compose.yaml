@@ -22,13 +22,12 @@ services:
     environment:
       - PORT=8000
 
-  # front:
-  #   build: ./front
-  #   ports:
-  #     - 80:80
-  #   volumes: 
-  #     - front:/home/node/app
-      
+  front:
+    build: ./front
+    ports:
+      - 80:80
+    volumes:
+      - front:/home/node/app
+
 volumes:
   front:
-

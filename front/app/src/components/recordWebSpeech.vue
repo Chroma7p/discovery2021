@@ -46,9 +46,11 @@ import axios from "axios";
 
 const isProduct = false;
 
-const bocabRegex = /右|左|前|まえ|みぎ|ひだり|ふれ|ちょっと|すごく|少し|かなり|そこそこ/g;
+const bocabRegex = /右|左|前|まえ|みぎ|ひだり|ふれ|ちょっと|すごく|少し|すこし|かなり|そこそこ/g;
+const bocabComment = /右|左|前|まえ|みぎ|ひだり|ふれ|いいね|いいよ|いけ|違う|ちがう|だめ|ダメ/g
 
 const apiPrefix = (isProduct) ? "http://163.43.106.67:8000" : "http://localhost:8000"
+const commentApiPrefix = (isProduct) ? "http://163.43.106.67:4000" : "http://localhost:4000"
 
 export default {
   name: "RecordWebSpeech",
@@ -118,7 +120,10 @@ export default {
       for(const i in this.availableWords){
         this.displayTexts += this.availableWords[i];
       }
+      console.log(this.availableWords);
       axios.post(apiPrefix + "/records", {words: this.availableWords});
+      const comments = text.match(bocabComment);
+      axios.post(commentApiPrefix + "/addWord", {words: comments});
     }
   }
 }
