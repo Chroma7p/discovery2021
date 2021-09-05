@@ -6,8 +6,8 @@ services:
     image: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: hack2021tofu
+      MONGO_INITDB_ROOT_USERNAME: $DB_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $DB_PASSWORD
     ports:
       - 27017:27017
     volumes:
@@ -25,4 +25,6 @@ services:
     build: ./front
     ports:
       - 80:80
+    environment:
+      - VUE_BUILD_ENV=$DOCKER_BUILD_ENV
     
