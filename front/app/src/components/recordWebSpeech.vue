@@ -44,7 +44,7 @@
 <script>
 import axios from "axios";
 
-const isProduct = false;
+const isProduct = true;
 
 const bocabRegex = /右|左|前|まえ|みぎ|ひだり|ふれ|ちょっと|すごく|少し|すこし|かなり|そこそこ/g;
 const bocabComment = /右|左|前|まえ|みぎ|ひだり|ふれ|いいね|いいよ|いけ|違う|ちがう|だめ|ダメ/g

@@ -14,8 +14,15 @@ wss.on('connection', (ws) => {
 
   app.post('/addWord', (req, res) => {
     const words = req.body.words;
-    ws.send(words);
-    res.send("Received Data!");
+    console.log(words)
+    ws.clients.forEach((client) => {
+      if (client.readyState == WebSocket.OPEN && data != undefined) {
+        words.forEach((word) => {
+          client.send(word)
+        })
+      }
+    })
+    res.send("Received Data");
   });
 
 
