@@ -25,3 +25,9 @@ services:
     build: ./front
     ports:
       - 80:80
+    volumes: 
+      - front:/home/node/app
+      
+volumes:
+  front:
+    external: true
