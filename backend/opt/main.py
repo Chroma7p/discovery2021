@@ -44,37 +44,39 @@ def wordchk(word):
     return -1,-1,degchk(word)
 def decision(words):
     all=0
-    nall=0
     stock=0
     ret={"left":0,"center":0,"right":0,"swing":0,"power":0}
-    pow={"left":0,"center":0,"right":0}
+    get={"left":0,"center":0,"right":0}
     for word in words:
         dir,deg,stk=wordchk(word)
         if stk!=-1:
           stock+=stk
+
           continue
         if rep[dir]=="swing":
             ret["swing"]+=1
             continue
-        ndeg=deg+stock
+        if stock!=0 and deg==1:
+            ndeg=stock
+        ndeg=deg
         ret[rep[dir]]+=ndeg
+        get[rep[dir]]+=1
         all+=ndeg
-        nall+=1
+
         stock=0
     if all==0:
       if ret["swing"]==0:
         return {"left":0,"center":0,"right":0,"swing":False,"power":0}
       else:
         return {"left":0,"center":0,"right":0,"swing":True,"power":0}
-    #print(ret)
-    ret["power"]=max(ret["left"],ret["right"],ret["center"])/nall
+    print(ret)
+    ret["power"]=max(ret["left"],ret["right"],ret["center"])/max(get["left"],get["right"],get["center"])
     for i in ["left","center","right"]:
       if ret[i]!=0:
         ret[i]/=all
-    ret["swing"]=ret["swing"]>nall*(1/3)
-    #print(nall,all)
+    ret["swing"]=ret["swing"]>max(get["left"],get["right"],get["center"])
+    print(all)
     return ret
-
 
 class Item(BaseModel):
     words:list
