@@ -28,11 +28,11 @@ services:
     volumes: 
       - front:/home/node/app
   
-  # socket:
-  #   build: ./socket
-  #   ports:
-  #     - 8080:8080
-  #     - 4000:4000
+  socket:
+    build: ./socket
+    ports:
+      - 8080:8080
+      - 4000:4000
       
 volumes:
   front:

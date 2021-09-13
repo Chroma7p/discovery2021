@@ -1,38 +1,43 @@
-const WebSocket = require('ws');
-const express = require('express');
-const bodyParser = require('body-parser')
-const app = express();
-const port = 4000;
+
+const fs = require("fs");
 const cors = require('cors')
-app.listen(port, () => console.log(`Listening on port ${port}...`));
-app.use(bodyParser.json());
-
-const wss = new WebSocket.Server({ port: 8080 });
-
+const bodyParser = require('body-parser');
 const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
 
-wss.on('connection', (ws) => {
+var express = require('express');
+var app = express();
+app.use(bodyParser.json());
+var http = require('http').Server(app);
+const io = require('socket.io')(http, {
+  origins: ['*']
+});
+const PORT = process.env.PORT || 4000;
+app.use(cors())
 
-  app.post('/addWord', cors(corsOptions), (req, res) => {
+
+io.on('connection', function (socket) {
+  console.log('connected');
+  app.post('/addWord', (req, res) => {
     const words = req.body.words;
     console.log(words)
-    ws.clients.forEach((client) => {
-      if (client.readyState == WebSocket.OPEN && data != undefined) {
-        words.forEach((word) => {
-          client.send(word)
-        })
-      }
-    })
-    res.send("Received Data");
+    for (let i = 0; i < words.length; i++) {
+      io.emit('publish', words[i]);
+    }
+    res.end("OK");
   });
+});
+
+app.get('/', (req, res) => {
+  res.writeHead(200, { "Content-Type": "text/html" });
+  var output = fs.readFileSync("./index.html", "utf-8");
+  res.end(output);
+})
 
 
-  console.log('クライアントとの接続を確立しました');
-  ws.on('message', (message) => {
-    console.log(`クライアントよりメッセージを受信しました: ${message}`);
-  });
+http.listen(PORT, function () {
+  console.log('server listening. Port:' + PORT);
 });
